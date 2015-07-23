@@ -58,7 +58,7 @@ function initUI(){
         group.userData = { 
             beatNumber: i,
             isActive: false,
-            velocity: 100,
+            velocity: 1,
             instrument: "closedhihat",
             type: "TOGGLABLE"
         };
@@ -134,12 +134,14 @@ function onMouseMove(){
 
     if (newVelocity <= MAX_VEL && newVelocity >= MIN_VEL) {
 
+        var beatNumber = target.parent.userData.beatNumber;
+        var instrument = target.parent.userData.instrument;
+
         target.parent.userData.velocity = newVelocity; // On update le param velocity dans userData associé à l'objet 3D
+        drumPattern[beatNumber][instrument].velocity = newVelocity;
 
         target.scale.set( newVelocity, newVelocity, newVelocity); // On update la taille de l'objet 3D
     };
-
-    
 }
 
 function onMouseUp(){
@@ -170,9 +172,6 @@ function activateBeat( target ){
     var beatNumber = target.parent.userData.beatNumber;
     var instrument = target.parent.userData.instrument;
     var velocity = target.parent.userData.velocity;
-
-    console.log(beatNumber);
-    console.log(instrument);
 
     drumPattern[beatNumber][instrument].isActive = !drumPattern[beatNumber][instrument].isActive;
     drumPattern[beatNumber][instrument].velocity = velocity;

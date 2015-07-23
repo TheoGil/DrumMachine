@@ -61,7 +61,7 @@ function init() {
     };
 }
 
-function playSound(buffer, time) {
+function playSound(buffer, time, velocity) {
     var source = audioContext.createBufferSource();
     source.buffer = buffer;
     // add a velocity parameter to the function
