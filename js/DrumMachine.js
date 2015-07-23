@@ -64,9 +64,13 @@ function init() {
 function playSound(buffer, time, velocity) {
     var source = audioContext.createBufferSource();
     source.buffer = buffer;
-    // add a velocity parameter to the function
-    // connect source to gainnode and set the gainnode gain to the value of the velocity parameter
-    source.connect(audioContext.destination);
+    
+    var gainNode = audioContext.createGain();
+    gainNode.gain.value = velocity;
+
+    source.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
     if (!source.start){
         source.start = source.noteOn;
     }
@@ -136,8 +140,8 @@ function scheduleNote( beatNumber, time ) {
 
         if ( drumPattern[beatNumber].hasOwnProperty(instrument) ) {
             if ( drumPattern[beatNumber][instrument].isActive ) {
-                console.log(drumPattern[beatNumber][instrument])
-                playSound(BUFFERS[instrument], time);
+
+                playSound(BUFFERS[instrument], time, drumPattern[beatNumber][instrument].velocity);
             };
         }
     }
