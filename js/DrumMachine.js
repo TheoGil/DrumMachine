@@ -45,18 +45,27 @@ function init() {
 
     for (var i = 0; i < 16; i++) {
         drumPattern.push({
-            closedhihat: false,
-            snare: false,
-            kick: false
+            closedhihat: {
+                isActive: false,
+                velocity: 100
+            },
+            snare: {
+                isActive: false,
+                velocity: 100
+            },
+            kick: {
+                isActive: false,
+                velocity: 100
+            }
         })
     };
-
-    console.log(drumPattern);
 }
 
 function playSound(buffer, time) {
     var source = audioContext.createBufferSource();
     source.buffer = buffer;
+    // add a velocity parameter to the function
+    // connect source to gainnode and set the gainnode gain to the value of the velocity parameter
     source.connect(audioContext.destination);
     if (!source.start){
         source.start = source.noteOn;
@@ -124,8 +133,10 @@ function scheduleNote( beatNumber, time ) {
     // osc.start( time );
     // osc.stop( time + noteLength );
     for (var instrument in drumPattern[beatNumber]) {
+
         if ( drumPattern[beatNumber].hasOwnProperty(instrument) ) {
-            if ( drumPattern[beatNumber][instrument] ) {
+            if ( drumPattern[beatNumber][instrument].isActive ) {
+                console.log(drumPattern[beatNumber][instrument])
                 playSound(BUFFERS[instrument], time);
             };
         }
@@ -134,7 +145,7 @@ function scheduleNote( beatNumber, time ) {
 
 function nextNote() {
     // Advance current note and time by a 16th note...
-    var secondsPerBeat = 60.0 / tempo;    // Notice this picks up the CURRENT 
+    var secondsPerBeat = 60.0 / tempo;    // Notice this picks up the CURRENT
                                           // tempo value to calculate beat length.
     nextNoteTime += 0.25 * secondsPerBeat;    // Add beat length to last beat time
 
@@ -149,6 +160,9 @@ $('.note').click(function(e){
     $that.toggleClass('active');
     var beatNumber = parseInt( $that.attr('data-beatNumber') );
     var instrument = $that.attr('data-instrument');
+    var velocity = parseInt( $that.attr('data-velocity') );
 
-    drumPattern[beatNumber][instrument] = !drumPattern[beatNumber][instrument];
+
+    drumPattern[beatNumber][instrument].isActive = !drumPattern[beatNumber][instrument].isActive;
+    drumPattern[beatNumber][instrument].velocity = velocity;
 });
