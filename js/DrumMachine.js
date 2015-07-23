@@ -21,8 +21,6 @@ var notesInQueue = [];          // the notes that have been put into the web aud
                                 // and may or may not have played yet. {note, time}
 var timerWorker = null;         // The Web Worker used to fire timer messages
 
-var drumPattern = [];
-
 function init() {
     audioContext = new AudioContext();
     
@@ -42,23 +40,6 @@ function init() {
         else
             console.log("message: " + e.data);
     };
-
-    for (var i = 0; i < 16; i++) {
-        drumPattern.push({
-            closedhihat: {
-                isActive: false,
-                velocity: 100
-            },
-            snare: {
-                isActive: false,
-                velocity: 100
-            },
-            kick: {
-                isActive: false,
-                velocity: 100
-            }
-        })
-    };
 }
 
 function playSound(buffer, time, velocity) {
@@ -70,6 +51,7 @@ function playSound(buffer, time, velocity) {
 
     source.connect(gainNode);
     gainNode.connect(audioContext.destination);
+    console.log(velocity)
 
     if (!source.start){
         source.start = source.noteOn;
