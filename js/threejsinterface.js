@@ -19,8 +19,8 @@ function init3DScene(){
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
 
-    $('canvas').mousedown(onMouseDown)
-    // $('canvas').addEventListener( 'mousedown', onMouseDown, false );
+    // $('canvas').mousedown(onMouseDown)
+    document.addEventListener( 'mousedown', onMouseDown, false );
 }
 
 function initUI(){
@@ -58,7 +58,8 @@ function initUI(){
         group.userData = { 
             beatNumber: i,
             isActive: false,
-            velocity: 1,
+            velocity: 100,
+            instrument: "closedhihat",
             type: "TOGGLABLE"
         };
         scene.add( group );
@@ -166,11 +167,27 @@ function onMouseUp(){
 }
 
 function activateBeat( target ){
+    var beatNumber = target.parent.userData.beatNumber;
+    var instrument = target.parent.userData.instrument;
+    var velocity = target.parent.userData.velocity;
+
+    console.log(beatNumber);
+    console.log(instrument);
+
+    drumPattern[beatNumber][instrument].isActive = !drumPattern[beatNumber][instrument].isActive;
+    drumPattern[beatNumber][instrument].velocity = velocity;
+
     target.parent.userData.isActive = true;
     target.material.wireframe = false;
 }
 
 function desactivateBeat( target ){
+    var beatNumber = target.parent.userData.beatNumber;
+    var instrument = target.parent.userData.instrument;
+    var velocity = target.parent.userData.velocity;
+
+    drumPattern[beatNumber][instrument].isActive = !drumPattern[beatNumber][instrument].isActive;
+
     target.parent.userData.isActive = false;
     target.material.wireframe = true;
 }

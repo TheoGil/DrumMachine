@@ -1,115 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DrumMachine</title>
-  <style type="text/css">
-    .beat{
-        display: inline-block;
-        border: 1px black dotted;
-        padding: 5px;
-    }
-    .note{
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        border: 1px black solid;
-    }
-    .note.active{
-        background-color: grey;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>DrumMachine</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+        canvas { 
+            width: 100%; 
+            height: 100% 
+        }
+        .beat{
+            display: inline-block;
+            border: 1px black dotted;
+            padding: 5px;
+        }
+        .note{
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 1px black solid;
+        }
+        .note.active{
+            background-color: grey;
+        }
+    </style>
 </head>
 <body>
-    <div id="tempoBox">
-        Tempo: <span id="showTempo">120</span>BPM 
-        <input id="tempo" type="range" min="30.0" max="160.0" step="1" value="120" onInput="">
-    </div>
     <div id="sequencer">
-        <div id="closedhihat">
-            <span class="beat">
-                <span class="note" data-beatNumber="0" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="1" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="2" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="3" data-instrument="closedhihat"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="4" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="5" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="6" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="7" data-instrument="closedhihat"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="8" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="9" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="10" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="11" data-instrument="closedhihat"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="12" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="13" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="14" data-instrument="closedhihat"></span>
-                <span class="note" data-beatNumber="15" data-instrument="closedhihat"></span>  
-            </span>
+        <div id="tempoBox">
+            Tempo: <span id="showTempo">120</span>BPM 
+            <input id="tempo" type="range" min="30.0" max="160.0" step="1" value="120" onInput="">
         </div>
-        <div id="snare">
-            <span class="beat">
-                <span class="note" data-beatNumber="0" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="1" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="2" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="3" data-instrument="snare"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="4" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="5" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="6" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="7" data-instrument="snare"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="8" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="9" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="10" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="11" data-instrument="snare"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="12" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="13" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="14" data-instrument="snare"></span>
-                <span class="note" data-beatNumber="15" data-instrument="snare"></span>  
-            </span>
+        <div >
+            <div id="closedhihat">
+                <span class="beat">
+                    <span class="note" data-beatNumber="0" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="1" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="2" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="3" data-instrument="closedhihat" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="4" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="5" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="6" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="7" data-instrument="closedhihat" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="8" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="9" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="10" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="11" data-instrument="closedhihat" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="12" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="13" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="14" data-instrument="closedhihat" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="15" data-instrument="closedhihat" data-velocity="100"></span>  
+                </span>
+            </div>
+            <div id="snare">
+                <span class="beat">
+                    <span class="note" data-beatNumber="0" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="1" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="2" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="3" data-instrument="snare" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="4" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="5" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="6" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="7" data-instrument="snare" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="8" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="9" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="10" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="11" data-instrument="snare" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="12" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="13" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="14" data-instrument="snare" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="15" data-instrument="snare" data-velocity="100"></span>  
+                </span>
+            </div>
+            <div id="kick">
+                <span class="beat">
+                    <span class="note" data-beatNumber="0" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="1" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="2" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="3" data-instrument="kick" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="4" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="5" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="6" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="7" data-instrument="kick" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="8" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="9" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="10" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="11" data-instrument="kick" data-velocity="100"></span>    
+                </span>
+                <span class="beat">
+                    <span class="note" data-beatNumber="12" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="13" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="14" data-instrument="kick" data-velocity="100"></span>
+                    <span class="note" data-beatNumber="15" data-instrument="kick" data-velocity="100"></span>  
+                </span>
+            </div>
         </div>
-        <div id="kick">
-            <span class="beat">
-                <span class="note" data-beatNumber="0" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="1" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="2" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="3" data-instrument="kick"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="4" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="5" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="6" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="7" data-instrument="kick"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="8" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="9" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="10" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="11" data-instrument="kick"></span>    
-            </span>
-            <span class="beat">
-                <span class="note" data-beatNumber="12" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="13" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="14" data-instrument="kick"></span>
-                <span class="note" data-beatNumber="15" data-instrument="kick"></span>  
-            </span>
-        </div>
+        <button id="play">PLAY</button>    
     </div>
-    <button id="play">PLAY</button>
+    
 </body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="js/BufferLoader.js"></script>
 <script type="text/javascript" src="js/DrumMachine.js"></script>
+<script type="text/javascript" src="js/threejsinterface.js"></script>
 <script type="text/javascript">
     $("#play").click(function(){
         play();
