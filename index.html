@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>DrumMachine</title>
     <style type="text/css">
+        #sequencer{
+            display: none;
+        }
         body {
             margin: 0;
         }
@@ -24,6 +27,11 @@
         }
         .note.active{
             background-color: grey;
+        }
+        button{
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
     </style>
 </head>
@@ -113,8 +121,9 @@
                 </span>
             </div>
         </div>
-        <button id="play">PLAY</button>    
+        
     </div>
+    <button id="play">PLAY</button>    
     
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>

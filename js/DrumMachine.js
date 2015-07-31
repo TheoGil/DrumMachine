@@ -5,7 +5,7 @@ var drumKit = ['media/closedhihat.wav', 'media/snare.wav', 'media/kick.wav'];
 var isPlaying = false;          // Are we currently playing?
 var startTime;                  // The start time of the entire sequence.
 var current16thNote;            // What note is currently last scheduled?
-var tempo = 120.0;              // tempo (in beats per minute)
+var tempo = 95.0;              // tempo (in beats per minute)
 var lookahead = 25.0;           // How frequently to call scheduling function 
                                 //(in milliseconds)
 var scheduleAheadTime = 0.1;    // How far ahead to schedule audio (sec)
@@ -20,6 +20,17 @@ var last16thNoteDrawn = -1;     // the last "box" we drew on the screen
 var notesInQueue = [];          // the notes that have been put into the web audio,
                                 // and may or may not have played yet. {note, time}
 var timerWorker = null;         // The Web Worker used to fire timer messages
+var currentBar  = 0;            // Currently playing bar
+var currentBeat = 0;            // Currently playing beat realtive to currentBar
+var swing       = [0, 0, 0, 0];
+
+function setSwing(){
+    var beatLength = 60/tempo;
+    swing[0] = 0;
+    swing[1] = beatLength/4;
+    swing[2] = beatLength/8;
+    swing[3] = beatLength/3.5;
+}
 
 function init() {
     audioContext = new AudioContext();
@@ -40,9 +51,12 @@ function init() {
         else
             console.log("message: " + e.data);
     };
+
+    setSwing();
 }
 
 function playSound(buffer, time, velocity) {
+
     var source = audioContext.createBufferSource();
     source.buffer = buffer;
     
@@ -51,7 +65,6 @@ function playSound(buffer, time, velocity) {
 
     source.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    console.log(velocity)
 
     if (!source.start){
         source.start = source.noteOn;
@@ -118,18 +131,32 @@ function scheduleNote( beatNumber, time ) {
     */
     // osc.start( time );
     // osc.stop( time + noteLength );
+    
+    
+
     for (var instrument in drumPattern[beatNumber]) {
 
         if ( drumPattern[beatNumber].hasOwnProperty(instrument) ) {
             if ( drumPattern[beatNumber][instrument].isActive ) {
-
-                playSound(BUFFERS[instrument], time, drumPattern[beatNumber][instrument].velocity);
+                var swingOffset = swing[currentBeat];
+                playSound(BUFFERS[instrument], time + swingOffset, drumPattern[beatNumber][instrument].velocity);
             };
         }
     }
+
+    currentBeat++;
+    if (currentBeat == 4) {
+        currentBeat = 0;
+        currentBar++;
+        if (currentBar == 4) {
+            currentBar = 0;
+        };
+    };
+
 }
 
 function nextNote() {
+
     // Advance current note and time by a 16th note...
     var secondsPerBeat = 60.0 / tempo;    // Notice this picks up the CURRENT
                                           // tempo value to calculate beat length.
@@ -139,6 +166,7 @@ function nextNote() {
     if (current16thNote == 16) {
         current16thNote = 0;
     }
+
 }
 
 $('.note').click(function(e){

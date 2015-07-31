@@ -139,6 +139,8 @@ function onMouseDown( event ) {
 
     var intersects = raycaster.intersectObjects( togglables, true );
 
+    console.log(intersects);
+
     if ( intersects.length > 0 ) {
 
         target = intersects[0].object;
@@ -155,19 +157,13 @@ function onMouseMove(){
     var yOffset = currentDragPos.y - dragStart.y; // Différence entre position y d'origine et de fin
     var xOffset = dragStart.x - currentDragPos.x; // Différence entre position x d'origine et de fin
     var offset  = yOffset + xOffset; // Différence moyenne entre les point d'origine et le point de fin
-    var newScale = target.scale.x + offset/10;
-
-    // var newVelocity = target.parent.userData.velocity + offset/10; // Divise offset par 10 pour réduire la sensibilité lors du drag
-
-    // console.log(newVelocity);
-    // console.log(target.scale);
+    var newScale = target.scale.x + offset/30;
 
     if (newScale <= MAX_SCALE && newScale >= MIN_SCALE) {
 
         var beatNumber = target.parent.userData.beatNumber;
         var instrument = target.parent.userData.instrument;
-
-        // target.parent.userData.velocity = newVelocity; // On update le param velocity dans userData associé à l'objet 3D
+        
         drumPattern[beatNumber][instrument].velocity = newScale/MAX_SCALE; // On update le param velocity dans notre drumPattern
 
         target.scale.set( newScale, newScale, newScale); // On update la taille de l'objet 3D
