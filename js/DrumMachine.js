@@ -52,7 +52,7 @@ function init() {
             console.log("message: " + e.data);
     };
 
-    setSwing();
+    // setSwing();
 }
 
 function playSound(buffer, time, velocity) {

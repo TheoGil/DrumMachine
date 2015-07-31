@@ -8,9 +8,13 @@ var MAX_SCALE = 2.7;
 var MIN_SCALE = 0.2;
 var INITIAL_VELOCITY = 0.5;
 var drumPattern = [];
+var textureFlare0 = THREE.ImageUtils.loadTexture( "media/img/lensflare0.png" );
+var textureFlare2 = THREE.ImageUtils.loadTexture( "media/img/lensflare2.png" );
+var textureFlare3 = THREE.ImageUtils.loadTexture( "media/img/lensflare3.png" );
 
 function init3DScene(){
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setClearColor( 0x000000, 1 );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
@@ -25,6 +29,40 @@ function init3DScene(){
     document.addEventListener( 'mousedown', onMouseDown, false );
 }
 
+function addStar(index, x){
+
+        var group = new THREE.Object3D()
+
+        var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
+        var material = new THREE.MeshLambertMaterial( {
+            color: 0x00ff00,
+            wireframe: true 
+        });
+        var cube = new THREE.Mesh( geometry, material );
+
+        group.add( cube );
+
+        togglables.push(cube);
+        group.add( cube );
+
+        group.position.x = x;
+        group.position.y = 1;
+
+        group.userData = { 
+            beatNumber: index,
+            isActive: false,
+            velocity: INITIAL_VELOCITY,
+            instrument: "closedhihat",
+            type: "TOGGLABLE"
+        };
+
+        var scale = MAX_SCALE * INITIAL_VELOCITY;
+        cube.scale.set( scale, scale, scale );
+
+        scene.add( group );
+        actors.push( group );
+}
+
 function initUI(){
     actors = [];
     var XPos = -8;
@@ -33,40 +71,7 @@ function initUI(){
 
     for (var i = 0; i < 16; i++) {
 
-        var group = new THREE.Object3D()
-
-        var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
-        var material = new THREE.MeshBasicMaterial( {
-            color: 0x00ff00,
-            wireframe: true 
-        });
-        var cube = new THREE.Mesh( geometry, material );
-
-        group.add( cube );
-
-        /*geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
-        material = new THREE.MeshBasicMaterial( {
-            color: 0x00ff00,
-            opacity: 0.5,
-            transparent: true
-        });
-        cube = new THREE.Mesh( geometry, material );
-        cube.rotation.y = 90;
-        cube.rotation.x = 90;*/
-
-        togglables.push(cube);
-        group.add( cube );
-
-        group.position.x = XPos;
-        group.position.y = 1;
-
-        group.userData = { 
-            beatNumber: i,
-            isActive: false,
-            velocity: INITIAL_VELOCITY,
-            instrument: "closedhihat",
-            type: "TOGGLABLE"
-        };
+        addStar(i, XPos);
 
         drumPattern.push({
             closedhihat: {
@@ -83,16 +88,11 @@ function initUI(){
             }
         });
 
-        var scale = MAX_SCALE * INITIAL_VELOCITY;
-        cube.scale.set( scale, scale, scale );
-
-        scene.add( group );
-        actors.push( group );
-
-
-
         XPos ++;
     };
+
+    var ambientLight = new THREE.AmbientLight( 0x404040 );
+    scene.add( ambientLight );
 }
 
 function render(){
@@ -138,8 +138,6 @@ function onMouseDown( event ) {
     raycaster.setFromCamera( mouse, camera );
 
     var intersects = raycaster.intersectObjects( togglables, true );
-
-    console.log(intersects);
 
     if ( intersects.length > 0 ) {
 
@@ -204,6 +202,9 @@ function activateBeat( target ){
 
     target.parent.userData.isActive = true;
     target.material.wireframe = false;
+
+    console.log(target)
+    // addLight(0.55, 0.9, 0.5, target.parent.position.x, target.parent.position.y, target.parent.position.z)
 }
 
 function desactivateBeat( target ){
@@ -217,10 +218,63 @@ function desactivateBeat( target ){
     target.material.wireframe = true;
 }
 
+function lensFlareUpdateCallback( object ) {
+
+    var f, fl = object.lensFlares.length;
+    var flare;
+    var vecX = -object.positionScreen.x * 2;
+    var vecY = -object.positionScreen.y * 2;
+
+
+    for( f = 0; f < fl; f++ ) {
+
+           flare = object.lensFlares[ f ];
+
+           flare.x = object.positionScreen.x + vecX * flare.distance;
+           flare.y = object.positionScreen.y + vecY * flare.distance;
+
+           flare.rotation = 0;
+
+    }
+
+    object.lensFlares[ 2 ].y += 0.025;
+    object.lensFlares[ 3 ].rotation = object.positionScreen.x * 0.5 + THREE.Math.degToRad( 45 );
+
+}
+
+function addLight( h, s, l, x, y, z ) {
+
+    console.log('Add light!');
+
+    var light = new THREE.PointLight( 0xffffff, 1.5, 0 );
+    // light.color.setHSL( h, s, l );
+    light.position.set( x, y, z );
+    scene.add( light );
+
+    var flareColor = new THREE.Color( 0xffffff );
+    flareColor.setHSL( h, s, l + 0.5 );
+
+    var lensFlare = new THREE.LensFlare( textureFlare0, 1, 0.0, THREE.AdditiveBlending, flareColor );
+
+    lensFlare.add( textureFlare2, 512, 0.0, THREE.AdditiveBlending );
+    lensFlare.add( textureFlare2, 512, 0.0, THREE.AdditiveBlending );
+    lensFlare.add( textureFlare2, 512, 0.0, THREE.AdditiveBlending );
+
+    lensFlare.add( textureFlare3, 60, 0.6, THREE.AdditiveBlending );
+    lensFlare.add( textureFlare3, 70, 0.7, THREE.AdditiveBlending );
+    lensFlare.add( textureFlare3, 120, 0.9, THREE.AdditiveBlending );
+    lensFlare.add( textureFlare3, 70, 1.0, THREE.AdditiveBlending );
+
+    // lensFlare.customUpdateCallback = lensFlareUpdateCallback;
+    lensFlare.position.copy( light.position );
+
+    scene.add( lensFlare );
+
+}
+
 function init(){
     init3DScene();
     initUI();
     render();
-    console.log(actors);
 }
 init();
