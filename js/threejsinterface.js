@@ -29,7 +29,7 @@ function init3DScene(){
     document.addEventListener( 'mousedown', onMouseDown, false );
 }
 
-function addStar(index, x){
+function addStar(index, x, y, instrument){
 
         var group = new THREE.Object3D()
 
@@ -46,13 +46,13 @@ function addStar(index, x){
         group.add( cube );
 
         group.position.x = x;
-        group.position.y = 1;
+        group.position.y = y;
 
         group.userData = { 
             beatNumber: index,
             isActive: false,
             velocity: INITIAL_VELOCITY,
-            instrument: "closedhihat",
+            instrument: instrument,
             type: "TOGGLABLE"
         };
 
@@ -71,7 +71,12 @@ function initUI(){
 
     for (var i = 0; i < 16; i++) {
 
-        addStar(i, XPos);
+        // closedhihat
+        addStar(i, XPos, 1, "closedhihat");
+        // snare
+        addStar(i, XPos, 0, "snare");
+        // kick
+        addStar(i, XPos, -1, "kick");
 
         drumPattern.push({
             closedhihat: {
