@@ -11,6 +11,22 @@ var drumPattern = [];
 var textureFlare0 = THREE.ImageUtils.loadTexture( "media/img/lensflare0.png" );
 var textureFlare2 = THREE.ImageUtils.loadTexture( "media/img/lensflare2.png" );
 var textureFlare3 = THREE.ImageUtils.loadTexture( "media/img/lensflare3.png" );
+var metronome = {
+    mesh: null,
+    move: function(xPos){
+        var newX = xPos - 8;
+        this.mesh.position.x = newX;
+    }
+};
+
+function addMetronome(){
+    var geometry = new THREE.SphereGeometry( 0.25 );
+    var material = new THREE.MeshLambertMaterial( {
+        color: 0xffffff
+    });
+    metronome.mesh = new THREE.Mesh( geometry, material );
+    scene.add(metronome.mesh);
+}
 
 function init3DScene(){
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -67,8 +83,6 @@ function initUI(){
     actors = [];
     var XPos = -8;
 
-
-
     for (var i = 0; i < 16; i++) {
 
         // closedhihat
@@ -95,6 +109,8 @@ function initUI(){
 
         XPos ++;
     };
+
+    addMetronome();
 
     var ambientLight = new THREE.AmbientLight( 0x404040 );
     scene.add( ambientLight );

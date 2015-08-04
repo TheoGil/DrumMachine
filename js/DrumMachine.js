@@ -2,10 +2,11 @@ window.onload = init;           // Initialize DrumMachine once everything is loa
 var audioContext, bufferLoader, kick, snare, closedhihat;
 var BUFFERS = {};               // Where we store all our buffer references
 var drumKit = ['media/closedhihat.wav', 'media/snare.wav', 'media/kick.wav'];
+var spaceKit = ['media/HAPTIC04__27_hat.wav', 'media/HAPTIC04__43_rim.wav', 'media/HAPTIC04__02_kick.wav'];
 var isPlaying = false;          // Are we currently playing?
 var startTime;                  // The start time of the entire sequence.
 var current16thNote;            // What note is currently last scheduled?
-var tempo = 95.0;              // tempo (in beats per minute)
+var tempo = 120;              // tempo (in beats per minute)
 var lookahead = 25.0;           // How frequently to call scheduling function 
                                 //(in milliseconds)
 var scheduleAheadTime = 0.1;    // How far ahead to schedule audio (sec)
@@ -37,7 +38,7 @@ function init() {
     
     bufferLoader = new BufferLoader(
         audioContext,
-        drumKit,
+        spaceKit,
         finishedLoading
     );
     bufferLoader.load();
@@ -143,6 +144,9 @@ function scheduleNote( beatNumber, time ) {
             };
         }
     }
+
+    // console.log(beatNumber);
+    metronome.move(beatNumber);
 
     currentBeat++;
     if (currentBeat == 4) {
